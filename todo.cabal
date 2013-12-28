@@ -20,6 +20,6 @@ executable todo
                    ,yesod
                    ,yesod-core
                    ,yesod-static
-                   ,http-conduit
+                   ,http-conduit < 2.0
                    ,shakespeare-js
                    ,hamlet
