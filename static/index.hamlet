@@ -1,0 +1,27 @@
+$doctype 5
+<html ng-app="todoApp">
+    <head>
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0-rc1/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js">
+        <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular-resource.min.js">
+        <script src="coffee/todo.js">
+        <script src="coffee/services.js">
+    <body>
+        <div ."container" ng-controller="TodoCtrl">
+            <div ."row">
+                <table ."table table-striped table-bordered table-hover">
+                    <thead> 
+                        <th>Done 
+                        <th>Task
+                        <th>
+                    <tbody>
+                    <tr ng-repeat="todo in todos">
+                        <td>
+                            <input type="checkbox" ng-model="todo.done" ng-click="checkTodo(todo)">
+                        <td>
+                            <label ng-dblclick="editTodo(todo)">{{todo.task}}
+                        <td>
+                            <a href="" ng-click="deleteTodo(todo)">del
+                <form ng-submit="addTodo()" ."margin-base-vertical">
+                    <input type="text" ng-model="task" size="50" placeholder="New task">
+                    <input ."btn btn-primary" type="submit" value="add">
