@@ -1,0 +1,25 @@
+name:               todo
+version:            0.1
+license:            MIT
+author:             Joel Hermanns
+maintainer:         joel.hermanns@gmail.com
+category:           Web
+build-type:         Simple
+cabal-version:      >=1.8
+
+executable todo 
+    main-is:        Main.hs
+    hs-source-dirs: src
+    extensions:     EmptyDataDecls
+    build-depends:  base
+                   ,persistent
+                   ,persistent-template
+                   ,persistent-sqlite
+                   ,text
+                   ,aeson
+                   ,yesod
+                   ,yesod-core
+                   ,yesod-static
+                   ,http-conduit
+                   ,shakespeare-js
+                   ,hamlet
