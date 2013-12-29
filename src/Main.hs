@@ -30,6 +30,8 @@ import           Data.Typeable
 import           Control.Applicative 
 import           Control.Monad (mzero)
 
+import           System.Environment
+
 share [mkPersist sqlSettings, mkMigrate "migrateAll"] [persistUpperCase|
 Task
     task String
@@ -149,8 +151,9 @@ deleteTodoR tid = do
 -- Main application
 main :: IO ()
 main = do
+    port <- getEnv "PORT"
     s <- static "static"
     pool <- createSqlitePool "dev.sqlite3" 10
     runSqlPersistMPool (runMigration migrateAll) pool
     manager <- newManager def
-    warp 3000 $ Todo s pool manager
+    warp (read port :: Int) $ Todo s pool manager
