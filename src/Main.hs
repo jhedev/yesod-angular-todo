@@ -10,6 +10,9 @@
 {-# LANGUAGE OverlappingInstances #-}
 {-# LANGUAGE StandaloneDeriving #-}
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
+{-# OPTIONS -XCPP #-}
+
+
 
 import           Yesod
 import           Yesod.Static
@@ -31,6 +34,15 @@ import           Control.Applicative
 import           Control.Monad (mzero)
 
 import           System.Environment
+
+-- #define PRODUCTION
+
+production :: Bool
+#ifdef PRODUCTION
+production = True
+#else
+production = False
+#endif
 
 share [mkPersist sqlSettings, mkMigrate "migrateAll"] [persistUpperCase|
 Task
@@ -63,8 +75,10 @@ data Todo = Todo
 -- Routes
 mkYesod "Todo" [parseRoutes|
 /                       HomeR GET
+#ifndef PRODUCTION
 /coffee/services.js     ServicesJsR GET
 /coffee/todo.js         TodoJsR GET
+#endif
 /static                 StaticR Static getStatic 
 /api/todo               TodosR GET PUT
 /api/todo/#TaskId       TodoR  GET PUT DELETE
@@ -91,6 +105,7 @@ instance RenderMessage Todo FormMessage where
 getHomeR :: Handler Html
 getHomeR = defaultLayout $(whamletFile "static/index.hamlet")
 
+#ifndef PRODUCTION
 
 -- Helpers for the coffescript compilation
 newtype RepJavascript = RepJavascript Content
@@ -113,7 +128,7 @@ getServicesJsR = coffeeToRepJavascript $(coffeeFileReload "static/services.coffe
 getTodoJsR :: Handler TypedContent
 getTodoJsR = coffeeToRepJavascript $(coffeeFileReload "static/todo.coffee")
 
-
+#endif
 -- Handler returning all todos as Json
 getTodosR :: Handler Value
 getTodosR = runDB (selectList [] []) >>= returnJson . asTodoEntities

@@ -4,8 +4,12 @@ $doctype 5
         <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0-rc1/css/bootstrap.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js">
         <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular-resource.min.js">
-        <script src="coffee/todo.js">
-        <script src="coffee/services.js">
+        $if production 
+            <script src="static/todo.js">
+            <script src="static/services.js">
+        $else
+            <script src="coffee/todo.js">
+            <script src="coffee/services.js">
     <body>
         <div ."container" ng-controller="TodoCtrl">
             <div ."row">
