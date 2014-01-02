@@ -15,15 +15,18 @@
 
 
 import           Yesod
+import           Yesod.Auth
+import           Yesod.Auth.GoogleEmail
 import           Yesod.Static
 import           Text.Coffee
 import           Text.Hamlet (hamletFile)
 import           Text.Julius
 import           Data.Aeson
+import           Data.Default (def)
 import           Data.Typeable (Typeable)
 import qualified Data.Text as T
 import           Data.Maybe (fromJust)
-import           Network.HTTP.Conduit (Manager, newManager, def)
+import           Network.HTTP.Conduit (Manager, newManager, conduitManagerSettings)
 import           Database.Persist.Sqlite
     ( ConnectionPool, SqlPersistT, runSqlPool, runMigration
     , createSqlitePool, runSqlPersistMPool
@@ -170,5 +173,5 @@ main = do
     s <- static "static"
     pool <- createSqlitePool "dev.sqlite3" 10
     runSqlPersistMPool (runMigration migrateAll) pool
-    manager <- newManager def
+    manager <- newManager conduitManagerSettings 
     warp (read port :: Int) $ Todo s pool manager

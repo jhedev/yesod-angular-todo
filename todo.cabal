@@ -12,14 +12,16 @@ executable todo
     hs-source-dirs: src
     extensions:     EmptyDataDecls
     build-depends:  base
+                   ,data-default
                    ,persistent
                    ,persistent-template
                    ,persistent-sqlite
                    ,text
                    ,aeson
                    ,yesod
+                   ,yesod-auth
                    ,yesod-core
                    ,yesod-static
-                   ,http-conduit < 2.0
+                   ,http-conduit >= 2.0
                    ,shakespeare-js
                    ,hamlet
