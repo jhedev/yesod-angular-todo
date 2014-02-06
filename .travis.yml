@@ -2,9 +2,9 @@ language: haskell
 ghc: 7.6
 deploy:
   provider: heroku
+  buildpack: https://github.com/begriffs/heroku-buildpack-ghc.git
   api_key:
     secure: Bv9kcr6/e1AQnm2k4Mq+554xV5L7suwVAW+AtaofVO7ytaDkd57lKsTRxTNrsr3LgAmgO2KJzRt2sqPXXXmBg4HRD66k7BYGBOhAUJVeUVgepN5PVamGwl+8JEcCQNVmrszXCS4bC9Hdw9NmAQtvuWob53fUwb8ksrAthPYhNhk=
   app: yesod-angular-todo
   on:
     repo: jhedev/yesod-angular-todo
-  buildpack: https://github.com/begriffs/heroku-buildpack-ghc
