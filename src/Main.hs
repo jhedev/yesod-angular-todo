@@ -21,18 +21,19 @@ import           Data.Aeson
 import           Data.Default (def)
 import           Data.Typeable (Typeable)
 import qualified Data.Text as T
+import           Data.Text.Encoding
 import           Data.Maybe (fromJust)
+import           Data.Monoid ((<>))
 import           Network.HTTP.Conduit (Manager, newManager, conduitManagerSettings)
-import           Database.Persist.Sqlite
-    ( ConnectionPool, SqlPersistT, runSqlPool, runMigration
-    , createSqlitePool, runSqlPersistMPool
-    )
+import           Database.Persist
+import           Database.Persist.Postgresql 
 import           Database.Persist.TH 
 import           Data.Typeable
 import           Control.Applicative 
 import           Control.Monad (mzero)
 
 import           System.Environment
+import           Web.Heroku (dbConnParams)
 
 
 share [mkPersist sqlSettings, mkMigrate "migrateAll"] [persistUpperCase|
@@ -74,7 +75,7 @@ mkYesod "Todo" [parseRoutes|
 
 -- Instances of the application
 instance Yesod Todo where
-    approot = ApprootStatic "http://localhost:3000"
+    approot = ApprootStatic "https://yesod-angular-todo.herokuapp.com"
 
 instance YesodPersist Todo where
     type YesodPersistBackend Todo = SqlPersistT
@@ -130,7 +131,10 @@ main :: IO ()
 main = do
     port <- getEnv "PORT"
     s <- static "static"
-    pool <- createSqlitePool "dev.sqlite3" 10
+    params <- dbConnParams
+    let connStr = foldr (\(k,v) t ->
+                    t <> (encodeUtf8 $ k <> "=" <> v <> " ")) "" params
+    pool <- createPostgresqlPool connStr 10
     runSqlPersistMPool (runMigration migrateAll) pool
     manager <- newManager conduitManagerSettings 
     warp (read port :: Int) $ Todo s pool manager

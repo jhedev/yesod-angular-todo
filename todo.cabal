@@ -15,7 +15,7 @@ executable todo
                    ,data-default
                    ,persistent
                    ,persistent-template
-                   ,persistent-sqlite
+                   ,persistent-postgresql
                    ,text
                    ,aeson
                    ,yesod
@@ -25,3 +25,4 @@ executable todo
                    ,http-conduit >= 2.0
                    ,shakespeare-js
                    ,hamlet
+                   ,heroku
